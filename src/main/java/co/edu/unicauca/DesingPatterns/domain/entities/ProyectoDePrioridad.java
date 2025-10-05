@@ -4,6 +4,8 @@
  */
 package co.edu.unicauca.DesingPatterns.domain.entities;
 
+import co.edu.unicauca.DesingPatters.domain.decorator.ProyectoDeGradoDecorator;
+
 /**
  *
  * @author CRISTHIAN TORRES

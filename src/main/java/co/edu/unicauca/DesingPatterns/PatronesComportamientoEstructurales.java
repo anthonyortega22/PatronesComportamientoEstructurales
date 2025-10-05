@@ -1,5 +1,9 @@
 package co.edu.unicauca.DesingPatterns;
 
+import co.edu.unicauca.DesingPatterns.domain.adapter.ExternalService;
+import co.edu.unicauca.DesingPatterns.domain.adapter.Company;
+import co.edu.unicauca.DesingPatterns.domain.adapter.CompanyDataProvider;
+import co.edu.unicauca.DesingPatterns.domain.adapter.ExternalServiceAdapter;
 import co.edu.unicauca.DesingPatterns.domain.entities.*;
 import co.edu.unicauca.DesingPatterns.domain.state.*;
 
@@ -159,6 +163,24 @@ public class PatronesComportamientoEstructurales {
         } catch (Exception e) {
             System.out.println("✅ Validación funcionando: " + e.getMessage());
         }
+    // ==========================================================
+        // 🔄 INTEGRACIÓN DEL PATRÓN ADAPTER
+        // ==========================================================
+        System.out.println("\n=== PRUEBA DE INTEGRACIÓN CON SERVICIO EXTERNO (ADAPTER) ===");
+
+        // Creamos el servicio externo que retorna datos en formato JSON
+        ExternalService externalService = new ExternalService();
+
+        // Creamos el adaptador para convertir el JSON a un objeto Company
+        CompanyDataProvider adapter = new ExternalServiceAdapter(externalService);
+
+        // Obtenemos la empresa adaptada
+        Company empresa = adapter.getCompany();
+
+        System.out.println("✅ Datos de empresa adaptados correctamente:");
+        System.out.println("Nombre de empresa: " + empresa.getName());
+        System.out.println("Representación completa: " + empresa);
+    
     }
     
     private static void ejecutarAccion(ProyectoDeGrado proyecto, Actions accion) {

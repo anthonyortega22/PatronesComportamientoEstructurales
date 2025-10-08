@@ -8,12 +8,15 @@ import co.edu.unicauca.DesingPatterns.domain.entities.*;
 import co.edu.unicauca.DesingPatterns.domain.state.*;
 import co.edu.unicauca.DesingPatterns.domain.facade.PlatformFacade;
 import co.edu.unicauca.DesingPatterns.domain.entities.ProyectoDeGrado;
-
+import co.edu.unicauca.DesingPatterns.domain.TemplateMethod.ProjectEvaluator;
+import co.edu.unicauca.DesingPatterns.domain.TemplateMethod.ProfessionalPracticeEvaluator;
+import co.edu.unicauca.DesingPatterns.domain.TemplateMethod.ResearchProjectEvaluator;
 
 public class PatronesComportamientoEstructurales {
 
+    
     public static void main(String[] args) {
-       System.out.println("=== PRUEBA DEL SISTEMA DE PROYECTOS DE GRADO ===\n");
+        System.out.println("=== PRUEBA DEL SISTEMA DE PROYECTOS DE GRADO ===\n");
         
         // 1. Crear un nuevo proyecto en estado INICIO
         ProyectoDeGrado proyecto = new ProyectoDeGrado(new EstadoInicio());
@@ -175,10 +178,8 @@ public class PatronesComportamientoEstructurales {
 
         // Creamos el servicio externo que retorna datos en formato JSON
         ExternalService externalService = new ExternalService();
-
         // Creamos el adaptador para convertir el JSON a un objeto Company
         CompanyDataProvider adapter = new ExternalServiceAdapter(externalService);
-
         // Obtenemos la empresa adaptada
         Company empresa = adapter.getCompany();
 
@@ -195,6 +196,56 @@ public class PatronesComportamientoEstructurales {
         PlatformFacade facade = new PlatformFacade();
         ProyectoDeGrado project = new ProyectoDeGrado("Sistema de Gestión de Laboratorios", "Carlos Pérez");
         facade.manageProject(project);
+
+        // ==========================================================
+        //  PATRÓN DECORATOR
+        // ==========================================================
+        System.out.println("\n=== PRUEBA DEL PATRÓN DECORATOR ===");
+
+        ProyectoDeGrado proyectoNormal = new ProyectoDeGrado(new EstadoInicio());
+        ProyectoDeGrado proyectoPrioritario = new ProyectoDePrioridad(proyectoNormal);
+
+        System.out.println("Descripción del proyecto normal:");
+        System.out.println("➡️ " + proyectoNormal.getDescripcion());
+
+        System.out.println("Descripción del proyecto con prioridad:");
+        System.out.println("🚨 " + proyectoPrioritario.getDescripcion());
+        
+        // ==========================================================
+// 📋 INTEGRACIÓN DEL PATRÓN TEMPLATE METHOD
+// ==========================================================
+System.out.println("\n=== PRUEBA DEL PATRÓN TEMPLATE METHOD ===");
+System.out.println("Evaluación de proyectos según modalidad\n");
+
+// Crear dos proyectos de ejemplo para evaluar
+ProyectoDeGrado proyectoPractica = new ProyectoDeGrado(new EstadoFormatoADiligenciado());
+proyectoPractica.setDescripcion("Sistema de Gestión de Inventarios para Empaques del Cauca");
+
+ProyectoDeGrado proyectoInvestigacion = new ProyectoDeGrado(new EstadoFormatoADiligenciado());
+proyectoInvestigacion.setDescripcion("Aplicación de Machine Learning para Predicción de Demanda");
+
+// === EVALUACIÓN DE PRÁCTICA PROFESIONAL ===
+System.out.println("═══════════════════════════════════════════════════════════");
+System.out.println("📊 MODALIDAD: PRÁCTICA PROFESIONAL");
+System.out.println("Proyecto: " + proyectoPractica.getDescripcion());
+System.out.println("═══════════════════════════════════════════════════════════");
+
+ProjectEvaluator evaluadorPractica = new ProfessionalPracticeEvaluator();
+evaluadorPractica.evaluate(proyectoPractica);
+
+// === EVALUACIÓN DE TRABAJO DE INVESTIGACIÓN ===
+System.out.println("\n═══════════════════════════════════════════════════════════");
+System.out.println("🔬 MODALIDAD: TRABAJO DE INVESTIGACIÓN");
+System.out.println("Proyecto: " + proyectoInvestigacion.getDescripcion());
+System.out.println("═══════════════════════════════════════════════════════════");
+
+ProjectEvaluator evaluadorInvestigacion = new ResearchProjectEvaluator();
+evaluadorInvestigacion.evaluate(proyectoInvestigacion);
+
+System.out.println("\n✅ Patrón Template Method aplicado exitosamente");
+System.out.println("   - Se mantiene el flujo de evaluación consistente");
+System.out.println("   - Cada modalidad personaliza sus criterios específicos");
+        
     
     }
     
@@ -208,4 +259,11 @@ public class PatronesComportamientoEstructurales {
     
     
 }
+
+
+    
+    
+    
+    
+
     

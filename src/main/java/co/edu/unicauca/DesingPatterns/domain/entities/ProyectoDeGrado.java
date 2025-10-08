@@ -15,6 +15,12 @@ public class ProyectoDeGrado {
 
     public ProyectoDeGrado(IProjectState state) {
         this.state = state;
+        this.descripcion = "Proyecto base sin descripción asignada";
+    }
+    
+     public ProyectoDeGrado(IProjectState state, String descripcion) {
+        this.state = state;
+        this.descripcion = descripcion;
     }
 
     public IProjectState getState() {

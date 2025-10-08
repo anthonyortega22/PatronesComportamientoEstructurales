@@ -6,9 +6,13 @@ import co.edu.unicauca.DesingPatterns.domain.adapter.CompanyDataProvider;
 import co.edu.unicauca.DesingPatterns.domain.adapter.ExternalServiceAdapter;
 import co.edu.unicauca.DesingPatterns.domain.entities.*;
 import co.edu.unicauca.DesingPatterns.domain.state.*;
+import co.edu.unicauca.DesingPatterns.domain.TemplateMethod.ProjectEvaluator;
+import co.edu.unicauca.DesingPatterns.domain.TemplateMethod.ProfessionalPracticeEvaluator;
+import co.edu.unicauca.DesingPatterns.domain.TemplateMethod.ResearchProjectEvaluator;
 
 public class PatronesComportamientoEstructurales {
 
+    
     public static void main(String[] args) {
         System.out.println("=== PRUEBA DEL SISTEMA DE PROYECTOS DE GRADO ===\n");
         
@@ -193,6 +197,43 @@ public class PatronesComportamientoEstructurales {
 
         System.out.println("Descripción del proyecto con prioridad:");
         System.out.println("🚨 " + proyectoPrioritario.getDescripcion());
+        
+        // ==========================================================
+// 📋 INTEGRACIÓN DEL PATRÓN TEMPLATE METHOD
+// ==========================================================
+System.out.println("\n=== PRUEBA DEL PATRÓN TEMPLATE METHOD ===");
+System.out.println("Evaluación de proyectos según modalidad\n");
+
+// Crear dos proyectos de ejemplo para evaluar
+ProyectoDeGrado proyectoPractica = new ProyectoDeGrado(new EstadoFormatoADiligenciado());
+proyectoPractica.setDescripcion("Sistema de Gestión de Inventarios para Empaques del Cauca");
+
+ProyectoDeGrado proyectoInvestigacion = new ProyectoDeGrado(new EstadoFormatoADiligenciado());
+proyectoInvestigacion.setDescripcion("Aplicación de Machine Learning para Predicción de Demanda");
+
+// === EVALUACIÓN DE PRÁCTICA PROFESIONAL ===
+System.out.println("═══════════════════════════════════════════════════════════");
+System.out.println("📊 MODALIDAD: PRÁCTICA PROFESIONAL");
+System.out.println("Proyecto: " + proyectoPractica.getDescripcion());
+System.out.println("═══════════════════════════════════════════════════════════");
+
+ProjectEvaluator evaluadorPractica = new ProfessionalPracticeEvaluator();
+evaluadorPractica.evaluate(proyectoPractica);
+
+// === EVALUACIÓN DE TRABAJO DE INVESTIGACIÓN ===
+System.out.println("\n═══════════════════════════════════════════════════════════");
+System.out.println("🔬 MODALIDAD: TRABAJO DE INVESTIGACIÓN");
+System.out.println("Proyecto: " + proyectoInvestigacion.getDescripcion());
+System.out.println("═══════════════════════════════════════════════════════════");
+
+ProjectEvaluator evaluadorInvestigacion = new ResearchProjectEvaluator();
+evaluadorInvestigacion.evaluate(proyectoInvestigacion);
+
+System.out.println("\n✅ Patrón Template Method aplicado exitosamente");
+System.out.println("   - Se mantiene el flujo de evaluación consistente");
+System.out.println("   - Cada modalidad personaliza sus criterios específicos");
+        
+    
     }
     
     private static void ejecutarAccion(ProyectoDeGrado proyecto, Actions accion) {
@@ -202,3 +243,11 @@ public class PatronesComportamientoEstructurales {
         System.out.println("✅ Estado actual: " + proyecto.getState().getNombreEstado());
     }
 }
+
+
+    
+    
+    
+    
+
+    

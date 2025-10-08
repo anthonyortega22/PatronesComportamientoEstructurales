@@ -1,5 +1,8 @@
-package co.edu.unicauca.DesingPatterns.domain.TemplateMethod;
+package Test;
 
+import co.edu.unicauca.DesingPatterns.domain.TemplateMethod.ProfessionalPracticeEvaluator;
+import co.edu.unicauca.DesingPatterns.domain.TemplateMethod.ProjectEvaluator;
+import co.edu.unicauca.DesingPatterns.domain.TemplateMethod.ResearchProjectEvaluator;
 import co.edu.unicauca.DesingPatterns.domain.entities.ProyectoDeGrado;
 import co.edu.unicauca.DesingPatterns.domain.state.EstadoFormatoADiligenciado;
 import org.junit.jupiter.api.Test;

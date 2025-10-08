@@ -2,8 +2,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/UnitTests/JUnit5TestClass.java to edit this template
  */
-package co.edu.unicauca.DesingPatterns.domain.adapter;
+package Test;
 
+import co.edu.unicauca.DesingPatterns.domain.adapter.Company;
+import co.edu.unicauca.DesingPatterns.domain.adapter.ExternalService;
+import co.edu.unicauca.DesingPatterns.domain.adapter.ExternalServiceAdapter;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;

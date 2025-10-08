@@ -6,11 +6,17 @@ import co.edu.unicauca.DesingPatterns.domain.adapter.CompanyDataProvider;
 import co.edu.unicauca.DesingPatterns.domain.adapter.ExternalServiceAdapter;
 import co.edu.unicauca.DesingPatterns.domain.entities.*;
 import co.edu.unicauca.DesingPatterns.domain.state.*;
+import co.edu.unicauca.DesingPatterns.domain.facade.PlatformFacade;
+import co.edu.unicauca.DesingPatterns.domain.entities.ProyectoDeGrado;
+import co.edu.unicauca.DesingPatterns.domain.TemplateMethod.ProjectEvaluator;
+import co.edu.unicauca.DesingPatterns.domain.TemplateMethod.ProfessionalPracticeEvaluator;
+import co.edu.unicauca.DesingPatterns.domain.TemplateMethod.ResearchProjectEvaluator;
 
 public class PatronesComportamientoEstructurales {
 
+    
     public static void main(String[] args) {
-       System.out.println("=== PRUEBA DEL SISTEMA DE PROYECTOS DE GRADO ===\n");
+        System.out.println("=== PRUEBA DEL SISTEMA DE PROYECTOS DE GRADO ===\n");
         
         // 1. Crear un nuevo proyecto en estado INICIO
         ProyectoDeGrado proyecto = new ProyectoDeGrado(new EstadoInicio());
@@ -151,35 +157,95 @@ public class PatronesComportamientoEstructurales {
             System.out.println("Estado final: " + proyecto.getState().getNombreEstado());
         }
         
+        
+        
         // Prueba de acciones inválidas
         System.out.println("\n=== PRUEBA DE VALIDACIONES ===");
         try {
             // Intentar una acción no permitida en estado final
             ejecutarAccion(proyecto, new Actions(
-                EnumTipoAccion.PRESENTAR_FORMATO_A,
-                EnumRolActor.ESTUDIANTE,
-                "Esta acción debería fallar"
+            EnumTipoAccion.PRESENTAR_FORMATO_A,
+            EnumRolActor.ESTUDIANTE,
+            "Intentando acción en estado final (debería ser rechazada)"
             ));
         } catch (Exception e) {
             System.out.println("✅ Validación funcionando: " + e.getMessage());
         }
-    // ==========================================================
+        // ==========================================================
         // 🔄 INTEGRACIÓN DEL PATRÓN ADAPTER
         // ==========================================================
         System.out.println("\n=== PRUEBA DE INTEGRACIÓN CON SERVICIO EXTERNO (ADAPTER) ===");
 
         // Creamos el servicio externo que retorna datos en formato JSON
         ExternalService externalService = new ExternalService();
-
         // Creamos el adaptador para convertir el JSON a un objeto Company
         CompanyDataProvider adapter = new ExternalServiceAdapter(externalService);
-
         // Obtenemos la empresa adaptada
         Company empresa = adapter.getCompany();
 
         System.out.println("✅ Datos de empresa adaptados correctamente:");
         System.out.println("Nombre de empresa: " + empresa.getName());
         System.out.println("Representación completa: " + empresa);
+        
+        
+        // ==========================================================
+        // INTEGRACIÓN DEL PATRÓN FACADE
+        // ========================================================== 
+                 
+        System.out.println("\n=== PRUEBA DE FACHADA ===");
+        PlatformFacade facade = new PlatformFacade();
+        ProyectoDeGrado project = new ProyectoDeGrado("Sistema de Gestión de Laboratorios", "Carlos Pérez");
+        facade.manageProject(project);
+
+        // ==========================================================
+        //  PATRÓN DECORATOR
+        // ==========================================================
+        System.out.println("\n=== PRUEBA DEL PATRÓN DECORATOR ===");
+
+        ProyectoDeGrado proyectoNormal = new ProyectoDeGrado(new EstadoInicio());
+        ProyectoDeGrado proyectoPrioritario = new ProyectoDePrioridad(proyectoNormal);
+
+        System.out.println("Descripción del proyecto normal:");
+        System.out.println("➡️ " + proyectoNormal.getDescripcion());
+
+        System.out.println("Descripción del proyecto con prioridad:");
+        System.out.println("🚨 " + proyectoPrioritario.getDescripcion());
+        
+        // ==========================================================
+// 📋 INTEGRACIÓN DEL PATRÓN TEMPLATE METHOD
+// ==========================================================
+System.out.println("\n=== PRUEBA DEL PATRÓN TEMPLATE METHOD ===");
+System.out.println("Evaluación de proyectos según modalidad\n");
+
+// Crear dos proyectos de ejemplo para evaluar
+ProyectoDeGrado proyectoPractica = new ProyectoDeGrado(new EstadoFormatoADiligenciado());
+proyectoPractica.setDescripcion("Sistema de Gestión de Inventarios para Empaques del Cauca");
+
+ProyectoDeGrado proyectoInvestigacion = new ProyectoDeGrado(new EstadoFormatoADiligenciado());
+proyectoInvestigacion.setDescripcion("Aplicación de Machine Learning para Predicción de Demanda");
+
+// === EVALUACIÓN DE PRÁCTICA PROFESIONAL ===
+System.out.println("═══════════════════════════════════════════════════════════");
+System.out.println("📊 MODALIDAD: PRÁCTICA PROFESIONAL");
+System.out.println("Proyecto: " + proyectoPractica.getDescripcion());
+System.out.println("═══════════════════════════════════════════════════════════");
+
+ProjectEvaluator evaluadorPractica = new ProfessionalPracticeEvaluator();
+evaluadorPractica.evaluate(proyectoPractica);
+
+// === EVALUACIÓN DE TRABAJO DE INVESTIGACIÓN ===
+System.out.println("\n═══════════════════════════════════════════════════════════");
+System.out.println("🔬 MODALIDAD: TRABAJO DE INVESTIGACIÓN");
+System.out.println("Proyecto: " + proyectoInvestigacion.getDescripcion());
+System.out.println("═══════════════════════════════════════════════════════════");
+
+ProjectEvaluator evaluadorInvestigacion = new ResearchProjectEvaluator();
+evaluadorInvestigacion.evaluate(proyectoInvestigacion);
+
+System.out.println("\n✅ Patrón Template Method aplicado exitosamente");
+System.out.println("   - Se mantiene el flujo de evaluación consistente");
+System.out.println("   - Cada modalidad personaliza sus criterios específicos");
+        
     
     }
     
@@ -189,5 +255,15 @@ public class PatronesComportamientoEstructurales {
         proyecto.getState().manejarAccion(proyecto, accion);
         System.out.println("✅ Estado actual: " + proyecto.getState().getNombreEstado());
     }
+    
+    
+    
 }
+
+
+    
+    
+    
+    
+
     

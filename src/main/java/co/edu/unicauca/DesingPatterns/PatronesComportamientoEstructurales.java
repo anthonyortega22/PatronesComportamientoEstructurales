@@ -10,7 +10,7 @@ import co.edu.unicauca.DesingPatterns.domain.state.*;
 public class PatronesComportamientoEstructurales {
 
     public static void main(String[] args) {
-       System.out.println("=== PRUEBA DEL SISTEMA DE PROYECTOS DE GRADO ===\n");
+        System.out.println("=== PRUEBA DEL SISTEMA DE PROYECTOS DE GRADO ===\n");
         
         // 1. Crear un nuevo proyecto en estado INICIO
         ProyectoDeGrado proyecto = new ProyectoDeGrado(new EstadoInicio());
@@ -163,24 +163,36 @@ public class PatronesComportamientoEstructurales {
         } catch (Exception e) {
             System.out.println("✅ Validación funcionando: " + e.getMessage());
         }
-    // ==========================================================
+        
+        // ==========================================================
         // 🔄 INTEGRACIÓN DEL PATRÓN ADAPTER
         // ==========================================================
         System.out.println("\n=== PRUEBA DE INTEGRACIÓN CON SERVICIO EXTERNO (ADAPTER) ===");
 
         // Creamos el servicio externo que retorna datos en formato JSON
         ExternalService externalService = new ExternalService();
-
         // Creamos el adaptador para convertir el JSON a un objeto Company
         CompanyDataProvider adapter = new ExternalServiceAdapter(externalService);
-
         // Obtenemos la empresa adaptada
         Company empresa = adapter.getCompany();
 
         System.out.println("✅ Datos de empresa adaptados correctamente:");
         System.out.println("Nombre de empresa: " + empresa.getName());
         System.out.println("Representación completa: " + empresa);
-    
+
+        // ==========================================================
+        //  PATRÓN DECORATOR
+        // ==========================================================
+        System.out.println("\n=== PRUEBA DEL PATRÓN DECORATOR ===");
+
+        ProyectoDeGrado proyectoNormal = new ProyectoDeGrado(new EstadoInicio());
+        ProyectoDeGrado proyectoPrioritario = new ProyectoDePrioridad(proyectoNormal);
+
+        System.out.println("Descripción del proyecto normal:");
+        System.out.println("➡️ " + proyectoNormal.getDescripcion());
+
+        System.out.println("Descripción del proyecto con prioridad:");
+        System.out.println("🚨 " + proyectoPrioritario.getDescripcion());
     }
     
     private static void ejecutarAccion(ProyectoDeGrado proyecto, Actions accion) {
@@ -190,4 +202,3 @@ public class PatronesComportamientoEstructurales {
         System.out.println("✅ Estado actual: " + proyecto.getState().getNombreEstado());
     }
 }
-    

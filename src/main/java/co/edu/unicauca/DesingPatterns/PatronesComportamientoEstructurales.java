@@ -6,6 +6,9 @@ import co.edu.unicauca.DesingPatterns.domain.adapter.CompanyDataProvider;
 import co.edu.unicauca.DesingPatterns.domain.adapter.ExternalServiceAdapter;
 import co.edu.unicauca.DesingPatterns.domain.entities.*;
 import co.edu.unicauca.DesingPatterns.domain.state.*;
+import co.edu.unicauca.DesingPatterns.domain.facade.PlatformFacade;
+import co.edu.unicauca.DesingPatterns.domain.entities.ProyectoDeGrado;
+
 
 public class PatronesComportamientoEstructurales {
 
@@ -151,19 +154,21 @@ public class PatronesComportamientoEstructurales {
             System.out.println("Estado final: " + proyecto.getState().getNombreEstado());
         }
         
+        
+        
         // Prueba de acciones inválidas
         System.out.println("\n=== PRUEBA DE VALIDACIONES ===");
         try {
             // Intentar una acción no permitida en estado final
             ejecutarAccion(proyecto, new Actions(
-                EnumTipoAccion.PRESENTAR_FORMATO_A,
-                EnumRolActor.ESTUDIANTE,
-                "Esta acción debería fallar"
+            EnumTipoAccion.PRESENTAR_FORMATO_A,
+            EnumRolActor.ESTUDIANTE,
+            "Intentando acción en estado final (debería ser rechazada)"
             ));
         } catch (Exception e) {
             System.out.println("✅ Validación funcionando: " + e.getMessage());
         }
-    // ==========================================================
+        // ==========================================================
         // 🔄 INTEGRACIÓN DEL PATRÓN ADAPTER
         // ==========================================================
         System.out.println("\n=== PRUEBA DE INTEGRACIÓN CON SERVICIO EXTERNO (ADAPTER) ===");
@@ -180,6 +185,16 @@ public class PatronesComportamientoEstructurales {
         System.out.println("✅ Datos de empresa adaptados correctamente:");
         System.out.println("Nombre de empresa: " + empresa.getName());
         System.out.println("Representación completa: " + empresa);
+        
+        
+        // ==========================================================
+        // INTEGRACIÓN DEL PATRÓN FACADE
+        // ========================================================== 
+                 
+        System.out.println("\n=== PRUEBA DE FACHADA ===");
+        PlatformFacade facade = new PlatformFacade();
+        ProyectoDeGrado project = new ProyectoDeGrado("Sistema de Gestión de Laboratorios", "Carlos Pérez");
+        facade.manageProject(project);
     
     }
     
@@ -189,5 +204,8 @@ public class PatronesComportamientoEstructurales {
         proyecto.getState().manejarAccion(proyecto, accion);
         System.out.println("✅ Estado actual: " + proyecto.getState().getNombreEstado());
     }
+    
+    
+    
 }
     
